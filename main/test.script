@@ -1,0 +1,43 @@
+require "random.random"
+
+function init(self)
+	-- Add initialization code here
+	-- Remove this function if not needed
+
+	mersenne_twister:randomseed( 42 )
+	print( mersenne_twister:random( 1000 ) )
+
+	linear_congruential_generator:randomseed( 42 )
+	print( linear_congruential_generator:random( 1000 ) )
+		
+
+	multiply_with_carry:randomseed( 42 )
+	print( multiply_with_carry:random( 1000 ) )
+	
+	
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Remove this function if not needed
+end
