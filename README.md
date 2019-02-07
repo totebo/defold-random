@@ -10,13 +10,15 @@ Or point to the ZIP file of a [specific release](https://github.com/totebo/defol
 
 ## Example
 
+Generates a pseudo-random number between 500 and 1000 from the seed 42:
+
       require "random.random"
 
       mersenne_twister:randomseed( 42 )
-      print( mersenne_twister:random( 1000 ) )
+      print( mersenne_twister:random( 500,1000 ) )
 
       linear_congruential_generator:randomseed( 42 )
-      print( linear_congruential_generator:random( 1000 ) )
+      print( linear_congruential_generator:random( 500,1000 ) )
 
       multiply_with_carry:randomseed( 42 )
-      print( multiply_with_carry:random( 1000 ) )
+      print( multiply_with_carry:random( 500,1000 ) )
