@@ -9,8 +9,8 @@ width = 960
 height = 640
 
 [project]
-title = States
+title = Random
 
 [library]
-include_dirs = states
+include_dirs = random
 
