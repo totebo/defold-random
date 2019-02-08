@@ -6,7 +6,8 @@ copyright(c) 2011 linux-man
 --]]------------------------------------
 
 --[[
-Adapted to Defold by Niclas Åberg 2019.
+https://github.com/linux-man/randomlua/
+Mersenne Twister algorithm adapted to Defold by Niclas Åberg 2019.
 --]]
 
 local math_floor = math.floor
@@ -56,21 +57,27 @@ local function seed()
 	return normalize(os.time())
 end
 
---Mersenne twister
-mersenne_twister = {}
-mersenne_twister.__index = mersenne_twister
-mersenne_twister.mt = {}
-mersenne_twister.index = 0
+M = {}
 
-function mersenne_twister:randomseed(s)
+function M:random_seed(s)
+
+	self.mt = {}
+	self.index = 0
 	if not s then s = seed() end
 	self.mt[0] = normalize(s)
 	for i = 1, 623 do
 		self.mt[i] = normalize(0x6c078965 * bit_xor(self.mt[i-1], math_floor(self.mt[i-1] / 0x40000000)) + i)
 	end
+	
 end
 
-function mersenne_twister:random(a, b)
+function M:random(a, b)
+
+
+	if not(self.mt) then
+		self:random_seed(os.time())
+	end
+	
 	local y
 	if self.index == 0 then
 		for i = 0, 623 do
@@ -96,93 +103,4 @@ function mersenne_twister:random(a, b)
 	end
 end
 
-function twister(s)
-	local temp = {}
-	setmetatable(temp, mersenne_twister)
-	temp.mt = {}
-	temp.index = 0
-	temp:randomseed(s)
-	return temp
-end
-
---Linear Congruential Generator
-linear_congruential_generator = {}
-linear_congruential_generator.__index = linear_congruential_generator
-linear_congruential_generator.a = 1103515245
-linear_congruential_generator.c = 12345
-linear_congruential_generator.m = 0x10000
-linear_congruential_generator.x = 0
-linear_congruential_generator.ic = 12345
-
-function linear_congruential_generator:random(a, b)
-	local y = (self.a * self.x + self.c) % self.m
-	self.x = y
-	if not a then return y / 0x10000
-	elseif not b then
-		if a == 0 then return y
-		else return 1 + (y % a) end
-	else
-		return a + (y % (b - a + 1))
-	end
-end
-
-function linear_congruential_generator:randomseed(s)
-	if not s then s = seed() end
-	self.x = normalize(s)
-end
-
-function lcg(s, r)
-	local temp = {}
-	setmetatable(temp, linear_congruential_generator)
-	temp.a, temp.c, temp.m = 1103515245, 12345, 0x10000  --from Ansi C
-	if r then
-		if r == 'nr' then temp.a, temp.c, temp.m = 1664525, 1013904223, 0x10000 --from Numerical Recipes.
-		elseif r == 'mvc' then temp.a, temp.c, temp.m = 214013, 2531011, 0x10000 end--from MVC
-	end
-	temp:randomseed(s)
-	return temp
-end
-
--- Multiply-with-carry
-multiply_with_carry = {}
-multiply_with_carry.__index = multiply_with_carry
-multiply_with_carry.a = 1103515245
-multiply_with_carry.c = 12345
-multiply_with_carry.m = 0x10000
-multiply_with_carry.x = 0
-multiply_with_carry.ic = 12345
-
-
-function multiply_with_carry:random(a, b)
-	local m = self.m
-	local t = self.a * self.x + self.c
-	local y = t % m
-	self.x = y
-	self.c = math_floor(t / m)
-	if not a then return y / 0x10000
-	elseif not b then
-		if a == 0 then return y
-		else return 1 + (y % a) end
-	else
-		return a + (y % (b - a + 1))
-	end
-end
-
-function multiply_with_carry:randomseed(s)
-	if not s then s = seed() end
-	self.c = self.ic
-	self.x = normalize(s)
-end
-
-function mwc(s, r)
-	local temp = {}
-	setmetatable(temp, multiply_with_carry)
-	temp.a, temp.c, temp.m = 1103515245, 12345, 0x10000  --from Ansi C
-	if r then
-		if r == 'nr' then temp.a, temp.c, temp.m = 1664525, 1013904223, 0x10000 --from Numerical Recipes.
-		elseif r == 'mvc' then temp.a, temp.c, temp.m = 214013, 2531011, 0x10000 end--from MVC
-	end
-	temp.ic = temp.c
-	temp:randomseed(s)
-	return temp
-end
+return M

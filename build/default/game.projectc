@@ -75,7 +75,7 @@ max_count = 64
 subpixels = 1
 
 [library]
-include_dirs = states
+include_dirs = random
 
 [liveupdate]
 settings = /liveupdate.settings
@@ -116,7 +116,7 @@ track_cpu = 0
 
 [project]
 compress_archive = 1
-title = States
+title = Random
 version = 1.0
 write_log = 0
 

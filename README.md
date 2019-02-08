@@ -12,13 +12,16 @@ Or point to the ZIP file of a [specific release](https://github.com/totebo/defol
 
 Generates a pseudo-random number between 500 and 1000 from the seed 42:
 
-      require "random.random"
+      local random = require "random.random"
 
-      mersenne_twister:randomseed( 42 )
-      print( mersenne_twister:random( 500,1000 ) )
+      function init(self)
 
-      linear_congruential_generator:randomseed( 42 )
-      print( linear_congruential_generator:random( 500,1000 ) )
+      	local seed = 42
 
-      multiply_with_carry:randomseed( 42 )
-      print( multiply_with_carry:random( 500,1000 ) )
+      	random:random_seed( seed )
+      	print( random:random( 1000 ) ) -- Outputs 846
+
+      	random:random_seed( seed )
+      	print( random:random( 1000 ) ) -- Outputs 846
+
+      end
