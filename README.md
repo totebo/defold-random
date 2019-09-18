@@ -1,5 +1,5 @@
 # Defold Random
-Pure Lua pseudo random generator(s) for Defold. Includes Mersenne Twister, Linear Congruential Generator and Multiply with Carry.
+Pure Lua pseudo random generator(s) for Defold using Includes Mersenne Twister.
 
 # Installation
 You can use Defold Random in your own project by adding this project as a [Defold library dependency](http://www.defold.com/manuals/libraries/). Open your game.project file and in the dependencies field under project add:
