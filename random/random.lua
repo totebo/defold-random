@@ -53,13 +53,12 @@ local function bit_xor(a, b)
 end
 
 local function seed()
-	--return normalize(tonumber(tostring(os.time()):reverse()))
 	return normalize(os.time())
 end
 
 M = {}
 
-function M:random_seed(s)
+function M.random_seed(s)
 
 	self.mt = {}
 	self.index = 0
@@ -71,11 +70,11 @@ function M:random_seed(s)
 	
 end
 
-function M:random(a, b)
+function M.random(a, b)
 
 
 	if not(self.mt) then
-		self:random_seed(os.time())
+		self.random_seed(os.time())
 	end
 	
 	local y
