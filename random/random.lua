@@ -58,7 +58,7 @@ end
 
 M = {}
 
-function M.random_seed(s)
+function M.random_seed(self,s)
 
 	self.mt = {}
 	self.index = 0
@@ -70,7 +70,7 @@ function M.random_seed(s)
 	
 end
 
-function M.random(a, b)
+function M.random(self,a, b)
 
 
 	if not(self.mt) then
