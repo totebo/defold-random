@@ -58,40 +58,42 @@ end
 
 M = {}
 
+local mt
+local index
+
 function M.random_seed(self,s)
 
-	self.mt = {}
-	self.index = 0
+	mt = {}
+	index = 0
 	if not s then s = seed() end
-	self.mt[0] = normalize(s)
+	mt[0] = normalize(s)
 	for i = 1, 623 do
-		self.mt[i] = normalize(0x6c078965 * bit_xor(self.mt[i-1], math_floor(self.mt[i-1] / 0x40000000)) + i)
+		mt[i] = normalize(0x6c078965 * bit_xor(mt[i-1], math_floor(mt[i-1] / 0x40000000)) + i)
 	end
 	
 end
 
 function M.random(self,a, b)
 
-
-	if not(self.mt) then
+	if not(mt) then
 		self.random_seed(os.time())
 	end
 	
 	local y
-	if self.index == 0 then
+	if index == 0 then
 		for i = 0, 623 do
-			--y = bit_or(math_floor(self.mt[i] / 0x80000000) * 0x80000000, self.mt[(i + 1) % 624] % 0x80000000)
-			y = self.mt[(i + 1) % 624] % 0x80000000
-			self.mt[i] = bit_xor(self.mt[(i + 397) % 624], math_floor(y / 2))
-			if y % 2 ~= 0 then self.mt[i] = bit_xor(self.mt[i], 0x9908b0df) end
+			--y = bit_or(math_floor(mt[i] / 0x80000000) * 0x80000000, mt[(i + 1) % 624] % 0x80000000)
+			y = mt[(i + 1) % 624] % 0x80000000
+			mt[i] = bit_xor(mt[(i + 397) % 624], math_floor(y / 2))
+			if y % 2 ~= 0 then mt[i] = bit_xor(mt[i], 0x9908b0df) end
 		end
 	end
-	y = self.mt[self.index]
+	y = mt[index]
 	y = bit_xor(y, math_floor(y / 0x800))
 	y = bit_xor(y, bit_and(normalize(y * 0x80), 0x9d2c5680))
 	y = bit_xor(y, bit_and(normalize(y * 0x8000), 0xefc60000))
 	y = bit_xor(y, math_floor(y / 0x40000))
-	self.index = (self.index + 1) % 624
+	index = (index + 1) % 624
 	if not a then return y / 0x80000000
 	elseif not b then
 		if a == 0 then return y
@@ -100,6 +102,7 @@ function M.random(self,a, b)
 	else
 		return a + (y % (b - a + 1))
 	end
+	
 end
 
 return M
