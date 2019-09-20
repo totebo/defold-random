@@ -61,7 +61,7 @@ M = {}
 local mt
 local index
 
-function M.random_seed(self,s)
+function M.random_seed(s)
 
 	mt = {}
 	index = 0
@@ -73,10 +73,10 @@ function M.random_seed(self,s)
 	
 end
 
-function M.random(self,a, b)
+function M.random(a, b)
 
 	if not(mt) then
-		self.random_seed(os.time())
+		M.random_seed(os.time())
 	end
 	
 	local y
